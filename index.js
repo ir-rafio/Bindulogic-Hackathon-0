@@ -35,7 +35,19 @@ const server = http.createServer((req, res) => {
     req.on('data', chunk => requestBody += chunk);
     req.on('end', () => {
       formData = querystring.parse(requestBody);
-      console.log(formData);
+      if(Object.keys(formData).length > 0) console.log(`Form Data: ${JSON.stringify(formData)}`);
+
+      if(pathname === '/about') {
+        const page = 'html/about-post.html';
+        console.log(`Opening ${page}`);
+        console.log('I am here...');
+
+        const data = fs.readFileSync(page, 'utf-8').replace('{{about}}', formData.about);
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.write(data);
+        res.end();
+        return;
+      }
     });
   }
 
