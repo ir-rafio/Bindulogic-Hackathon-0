@@ -10,6 +10,15 @@ const routeMap = {
   '/about': 'about.html'
 }
 
+const redirectMap = {
+  '/home': '/'
+}
+
+const redirect = (res, location, statusCode = 302) => {
+  res.writeHead(statusCode, {'Location': location});
+  res.end();
+}
+
 const server = http.createServer((req, res) => {
   const {method} = req;
   const parsedUrl = url.parse(req.url, true);
@@ -19,6 +28,13 @@ const server = http.createServer((req, res) => {
   if(Object.keys(query).length > 0) console.log(`Query: ${JSON.stringify(query)}`);
   
   if(pathname === '/favicon.ico') return;
+
+  if(pathname in redirectMap) {
+    const redirectPage = redirectMap[pathname];
+    console.log(`Redirecting to ${redirectPage}`);
+    redirect(res, redirectPage, 301);
+    return;
+  }
 
   const page = `html/${routeMap[pathname]}`;
   console.log(`Opening ${page}`);
