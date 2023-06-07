@@ -40,7 +40,6 @@ const server = http.createServer((req, res) => {
       if(pathname === '/about') {
         const page = 'html/about-post.html';
         console.log(`Opening ${page}`);
-        console.log('I am here...');
 
         const data = fs.readFileSync(page, 'utf-8').replace('{{about}}', formData.about);
         res.writeHead(200, {'Content-Type': 'text/html'});
