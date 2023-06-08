@@ -28,8 +28,6 @@ const server = http.createServer((req, res) => {
   console.log(`${method} Request for ${pathname}`);
   if(Object.keys(query).length > 0) console.log(`Query: ${JSON.stringify(query)}`);
   
-  if(pathname === '/favicon.ico') return;
-
   if(method === 'POST') {
     let requestBody = '';
     req.on('data', chunk => requestBody += chunk);
