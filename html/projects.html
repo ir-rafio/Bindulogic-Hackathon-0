@@ -7,20 +7,24 @@
   <title>Projects</title>
 </head>
 <body>
-  <h1>Projects:</h1>
-  <ol type="1" id="projectList"></ol>
+  <a href="../">Home</a>&nbsp;&nbsp;
+  <a href="../about">About</a>&nbsp;&nbsp;
+  <a href="../projects">Projects</a><br>
 
-  <a href="../">Home</a><br>
-  <a href="../about">About</a>
-  
-  <h2>Add New Project</h2>
-  <form action="/projects" method="POST" onsubmit="addProject(event)">
-    <label for="projectName">Project Name</label>
-    <input type="text" id="projectName" name="projectName"><br>
-    <label for="projectDescription">Project Description</label>
-    <textarea id="projectDescription" name="projectDescription"></textarea><br>
-    <button type="submit">Add</button>
-  </form>
+  <div style="display: inline-block; width: 45%; vertical-align: top;">
+    <h1>Projects</h1>
+    <ol type="1" id="projectList"></ol>
+  </div>
+  <div style="display: inline-block; width: 45%; vertical-align: top;">
+    <h2>Add New Project</h2>
+    <form action="/projects" method="POST" onsubmit="addProject(event)">
+      <label for="projectName">Project Name</label><br>
+      <input type="text" id="projectName" name="projectName"><br>
+      <label for="projectDescription">Project Description</label><br>
+      <textarea id="projectDescription" name="projectDescription"></textarea><br>
+      <button type="submit">Add</button>
+    </form>
+  </div>
 
   <script>
     const addProject = (event) => {
