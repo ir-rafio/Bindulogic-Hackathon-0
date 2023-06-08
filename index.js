@@ -26,7 +26,17 @@ const server = http.createServer((req, res) => {
   const {pathname, query} = parsedUrl;
 
   console.log(`${method} Request for ${pathname}`);
-  if(Object.keys(query).length > 0) console.log(`Query: ${JSON.stringify(query)}`);
+  if(Object.keys(query).length > 0)
+  {
+    console.log(`Query: ${JSON.stringify(query)}`);
+
+    if (pathname === '/' && 'location' in query) {
+      const redirectPage = '/'+query.location.toLowerCase();
+      console.log(`Redirecting to ${redirectPage}`);
+      redirect(res, redirectPage, 301);
+      return;
+    }
+  }
   
   if(method === 'POST') {
     let requestBody = '';
