@@ -7,16 +7,20 @@
   <title>About</title>
 </head>
 <body>
-  <h1>About</h1>
+  <a href="../">Home</a>&nbsp;&nbsp;
+  <a href="../about">About</a>&nbsp;&nbsp;
+  <a href="../projects">Projects</a><br>
 
-  <a href="../">Home</a><br>
-  <a href="../projects">Projects</a>
-  
-  <form action="/about" method="POST">
-    <label for="about">Write about yourself:</label>
-    <textarea id="about" name="about"></textarea>
-    <br>
-    <button type="submit">Submit</button>
-  </form>
+  <div style="display: inline-block; width: 45%; vertical-align: top;">
+    <h1>About</h1>
+  </div>
+  <div style="display: inline-block; width: 45%; vertical-align: top;">
+    <form action="/about" method="POST">
+      <label for="about">Write about yourself:</label><br>
+      <textarea id="about" name="about"></textarea>
+      <br>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
 </body>
 </html>
