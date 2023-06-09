@@ -6,13 +6,13 @@ const querystring = require('querystring');
 const port = 3000;
 
 const routeMap = {
-  '/': 'home.html',
-  '/projects': 'projects.html',
-  '/about': 'about.html'
+  '': 'home.html',
+  'projects': 'projects.html',
+  'about': 'about.html'
 }
 
 const redirectMap = {
-  '/home': '/'
+  'home': ''
 }
 
 const redirect = (res, location, statusCode = 302) => {
@@ -21,17 +21,18 @@ const redirect = (res, location, statusCode = 302) => {
 }
 
 const server = http.createServer((req, res) => {
-  const {method} = req;
+  const method = req.method.toUpperCase();
   const parsedUrl = url.parse(req.url, true);
   const {pathname, query} = parsedUrl;
+  const trimmedPath = pathname.replace(/^\/|\/$/g, '').toLowerCase();
 
-  console.log(`${method} Request for ${pathname}`);
+  console.log(`${method} Request for ${trimmedPath}`);
   if(Object.keys(query).length > 0)
   {
     console.log(`Query: ${JSON.stringify(query)}`);
 
-    if (pathname === '/' && 'location' in query) {
-      const redirectPage = '/'+query.location.toLowerCase();
+    if (trimmedPath === '' && 'location' in query) {
+      const redirectPage = query.location.replace(/^\/|\/$/g, '').toLowerCase();
       console.log(`Redirecting to ${redirectPage}`);
       redirect(res, redirectPage, 301);
       return;
@@ -40,12 +41,12 @@ const server = http.createServer((req, res) => {
   
   if(method === 'POST') {
     let requestBody = '';
-    req.on('data', chunk => requestBody += chunk);
+    req.on('data', (buffer) => requestBody += buffer);
     req.on('end', () => {
       formData = querystring.parse(requestBody);
       if(Object.keys(formData).length > 0) console.log(`Form Data: ${JSON.stringify(formData)}`);
 
-      if(pathname === '/about') {
+      if(trimmedPath === 'about') {
         const page = 'html/about-post.html';
         console.log(`Opening ${page}`);
 
@@ -58,20 +59,20 @@ const server = http.createServer((req, res) => {
     });
   }
 
-  if(pathname in redirectMap) {
-    const redirectPage = redirectMap[pathname];
+  if(trimmedPath in redirectMap) {
+    const redirectPage = redirectMap[trimmedPath];
     console.log(`Redirecting to ${redirectPage}`);
     redirect(res, redirectPage, 301);
     return;
   }
 
-  if(!(pathname in routeMap)) {
+  if(!(trimmedPath in routeMap)) {
     res.writeHead(404, {'Content-Type': 'text/plain'});
     res.end('Error 404 Not Found');
     return;
   }
 
-  const page = `html/${routeMap[pathname]}`;
+  const page = `html/${routeMap[trimmedPath]}`;
   console.log(`Opening ${page}`);
 
   fs.readFile(page, (err, data) => {
